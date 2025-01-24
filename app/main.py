@@ -4,6 +4,10 @@ import time
 import zipfile
 import shutil
 
+#convertion xlsx in json
+import  jpype
+import  asposecells
+
 def download_mortes_violentas():
     url = "https://ssp.ba.gov.br/informacoes-criminais/estatistica/?ano=2024"
     download_dir = os.path.join(os.getcwd(), "downloads")
@@ -60,5 +64,12 @@ def extract_and_organize_files(zip_path):
     shutil.rmtree("temp_extracted")
     print("Arquivos organizados com sucesso.")
 
-# Chamada da função
+def convert_xlsxInjson():
+    jpype.startJVM()
+    from asposecells.api import Workbook
+    workbook = Workbook("data/01_MORTES_VIOLENTAS_ESTADO.xlsx")
+    workbook.save("json/Output.json")
+    jpype.shutdownJVM()
+
 download_mortes_violentas()
+convert_xlsxInjson()
